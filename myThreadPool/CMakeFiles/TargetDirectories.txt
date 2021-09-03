@@ -1,0 +1,4 @@
+/home/cxy-hm/code/test/CMakeFiles/rebuild_cache.dir
+/home/cxy-hm/code/test/CMakeFiles/edit_cache.dir
+/home/cxy-hm/code/test/CMakeFiles/demo.dir
+/home/cxy-hm/code/test/CMakeFiles/test_thread.dir

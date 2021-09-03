@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project(thread_pool)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+add_executable(demo main.cpp task_manager.h task.h thread_pool.h thread_pool.cpp)
+add_executable(test_thread test.cpp)
