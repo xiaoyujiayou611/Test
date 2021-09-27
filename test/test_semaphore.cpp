@@ -58,21 +58,49 @@ void Test1() {
     g_cv.wait(lk, [=]{ return flag;});
     //g_cv.wait(lk);
     int sum = 30*30 + 40*40;
-    lk.unlock();
+    
+    // lk.unlock();
     std::cout << "sum: " << sum << std::endl;
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    //flag = false;
+    
+    // std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    flag = false;
+    g_cv.notify_all();
+    std::cout << "in 1" << std::endl;
+}
+
+void Test4() {
+    // for  confirm test1 是否需要notify；
+    std::cout << "test 4" << std::endl;
+    std::unique_lock<std::mutex> lk(g_mtx);
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    flag = true;
     g_cv.notify_one();
 }
 
 void Test2() {
-
-    std::unique_lock<std::mutex> lk(g_mtx);
     std::cout << "test2" << std::endl;
     
-    
-    g_cv.wait(lk);
+    std::unique_lock<std::mutex> lk(g_mtx);
+    std::cout << "in 2" << std::endl;
+    g_cv.wait(lk, [=]{ return flag == false;});
     std::cout << "test2 is notified." << std::endl;
+    //lk.unlock();
+    
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    //std::cout << "test2 notify test1" << std::endl;
+    
+    //g_cv.notify_one();
+
+
+}
+
+void Test3() {
+    std::cout << "test3" << std::endl;
+    
+    std::unique_lock<std::mutex> lk(g_mtx);
+    std::cout << "in 3" << std::endl;
+    g_cv.wait(lk, [=]{ return flag == false;});
+    std::cout << "test3 is notified." << std::endl;
     
     //std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     //std::cout << "test2 notify test1" << std::endl;
@@ -82,16 +110,17 @@ void Test2() {
 
 }
 
-
 int main(int argc, char** argv) {
     // std::thread t1(thread_func, 1);
     // std::thread t2(thread_func, 2);
     // std::thread t3(thread_func, 3);
     std::thread t1(Test1);
     std::thread t2(Test2);
+    std::thread t3(Test3);
+    //std::thread t4(Test4);
 
     t1.join();
     t2.join();
-    //t3.join();
+    t3.join();
     return 0;
 }
