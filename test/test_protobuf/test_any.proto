@@ -1,0 +1,27 @@
+syntax = "proto3";
+import "google/protobuf/any.proto";
+//import "any.proto";
+
+message TestOne {
+    string name = 1;
+    string data = 2;
+}
+
+message AnyMessage {
+    google.protobuf.Any any = 1;
+}
+
+
+message OneofMsg {
+    oneof msg {
+        int32 int_32_value = 1;
+        int64 int_64_value = 2;
+        bool  bool_value   = 3;
+        string string_value = 4;
+        google.protobuf.Any any = 5;
+    }
+}
+message TestTwo {
+
+    map<string, OneofMsg> k_v_item = 1;
+}

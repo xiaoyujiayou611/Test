@@ -1,0 +1,13 @@
+syntax = "proto3";
+message Data {
+    string data_name = 1;
+    uint32 id        = 2;
+}
+
+message DataSet {
+    repeated Data  data  = 1;
+}
+
+message  MapTest {
+    map<string, DataSet> map_item = 1;
+}

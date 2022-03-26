@@ -51,7 +51,7 @@ void thread_func1() {
     std::this_thread::sleep_for(std::chrono::microseconds(20));
     common_func("thread1");
     std::this_thread::sleep_for(std::chrono::microseconds(20));
-    erase_func("thread1");
+   // erase_func("thread1");
 }
 
 void thread_func2() {
@@ -66,7 +66,7 @@ void thread_func3() {
     std::this_thread::sleep_for(std::chrono::microseconds(15));
     common_func("thread3");
     std::this_thread::sleep_for(std::chrono::microseconds(15));
-    erase_func("thread3");
+    //erase_func("thread3");
 }
 void thread_func4() {
     Data d4(10,11,12);
@@ -80,7 +80,7 @@ void thread_func5() {
     std::this_thread::sleep_for(std::chrono::microseconds(20));
     common_func("thread5");
     std::this_thread::sleep_for(std::chrono::microseconds(20));
-    erase_func("thread5");
+    //erase_func("thread5");
 }
 
 void thread_func6() {

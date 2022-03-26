@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+message Test {
+    repeated uint64 ts_set = 1;
+}
+
+message TestString {
+    repeated string xxx = 1;
+}

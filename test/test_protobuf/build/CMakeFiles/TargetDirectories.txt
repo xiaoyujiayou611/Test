@@ -1,0 +1,4 @@
+/home/ubuntu/haomo/test/build/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/haomo/test/build/CMakeFiles/edit_cache.dir
+/home/ubuntu/haomo/test/build/CMakeFiles/test_map.dir
+/home/ubuntu/haomo/test/build/CMakeFiles/test_any.dir
