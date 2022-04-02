@@ -26,7 +26,7 @@ int main(int argc, char**argv) {
     }
     ThreadPool::Instance()->Start();
     while(!g_is_stop) {
-       // std::cout << "running......" << std::endl;
+        std::cout << "running......" << std::endl;
     }
     return 0;
 }
