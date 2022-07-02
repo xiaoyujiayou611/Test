@@ -4,6 +4,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include <thread>
 
 class Test {
 public:
@@ -24,7 +25,7 @@ public:
     ~Test() {
         std::cout << "deconstrut "  << a << std::endl;
     }
-    int val() {
+    const int& val() {
         return a;
     }
 
@@ -133,13 +134,29 @@ int main() {
     // test_without_arg_shared_ptr(p);
     // std::cout << "out of func:" << *p << std::endl; 
 
+    Test* test = new Test(8);
+    //int *p = new int(8);
+    // std::shared_ptr<int> s_p(p);
+    // std::vector<std::shared_ptr<int>> vec;
+    // vec.emplace_back(p);
+    std::map<std::string,  std::shared_ptr<Test>> map_test;
+    map_test["chengxiaoyu"] = std::make_shared<Test>(*test);
+    std::cout << map_test["chengxiaoyu"]->val() << std::endl;
+    delete test;
+    std::vector<std::thread> threads;
+    int i = 0;
+    while (i < 10) {
+        std::shared_ptr<Test> test = std::make_shared<Test>(i); 
+        //auto& val = test->val();
+        threads.emplace_back([=] {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::cout << "val:" << test->val() << std::endl;
+        });
+        i++;
+    }
 
-    int *p = new int(8);
-    std::shared_ptr<int> s_p(p);
-    std::vector<std::shared_ptr<int>> vec;
-    vec.emplace_back(p);
-    std::map<std::string, std::shared_ptr<int>> map_test;
-    map_test["chengxiaoyu"] = std::shared_ptr<int>(p);
-    std::cout << *map_test["chengixoayu"] << std::endl;
-
+    for (auto& thread: threads) {
+        thread.join();
+    }
+    return 0;
 }

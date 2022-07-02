@@ -48,25 +48,35 @@ public:
         task_queue_cv_.notify_one();
     }
 
-    void start() {
+    // flag is just for test lambda 
+    void start(const bool flag) {
         stop_.store(false, std::memory_order_relaxed);
         for (int i = 0; i < pool_size_; i++) {
-            threads_.emplace_back([this] {
+            threads_.emplace_back([this, flag] {
                 while(!stop_.load(std::memory_order_relaxed)) {
                     std::unique_lock<std::mutex> lk(task_queue_mtx_);
-                    task_queue_cv_.wait(lk, [this] {
+                    if (task_queue_cv_.wait_for(lk,  std::chrono::seconds(1), [this] {
                         return stop_.load(std::memory_order_relaxed) || task_queue_.size() > 0;
-                    });
-                    if (stop_.load(std::memory_order_relaxed)) {
+                    })) {
+                        if (stop_.load(std::memory_order_relaxed)) {
+                            lk.unlock();
+                            return;
+                        }
+                        //std::unique_lock<std::mutex> lkk(task_queue_mtx_);
+                        auto task = task_queue_.front();
+                        std::cout << "task_id:" << task->get_id() << std::endl;
+                        std::cout << "flag:" << flag << std::endl;
+                        task_queue_.pop();
+                        lk.unlock(); 
+                        task->run();
+                    } else {
+                        std::cout << "waiting time-out." << std::endl;
                         lk.unlock();
+                        //stop_.store(true,  std::memory_order_relaxed);
+                        std::raise(SIGTERM);
                         return;
                     }
-                    //std::unique_lock<std::mutex> lkk(task_queue_mtx_);
-                    auto task = task_queue_.front();
-                    std::cout << "task_id:" << task->get_id() << std::endl;
-                    task_queue_.pop();
-                    lk.unlock(); 
-                    task->run();
+                   
                 }
             });
         }
@@ -162,7 +172,7 @@ int main(int argc, char** argv) {
         }
     });
 
-   thread_pool->start();
+   thread_pool->start(true);
     for (int i = 0; i < 5; i++) {
         std::shared_ptr<Test> test = std::make_shared<Test>(2);
         std::cout <<  "test's addr:" << &test << std::endl;
