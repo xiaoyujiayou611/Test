@@ -1,4 +1,0 @@
-# Hashes of file build rules.
-40b05cad97cee07a534a271d7a87969d proto/__init__.py
-2d20013e17b84df2ef02c31b5737ef46 proto/test_any.pb.cc
-827d004a5c2bd8889db3d0f189efd95a proto/test_map.pb.cc

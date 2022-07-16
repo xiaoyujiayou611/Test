@@ -1,7 +1,8 @@
 syntax = "proto3";
-
+package protobuf.test;
 message Test {
  uint32 a = 1;
  string b = 2;
  uint64 c = 3;
+ uint64 timeout = 4;
 }
